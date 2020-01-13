@@ -1,4 +1,3 @@
-
 import {createSiteMenuTemplate} from './components/menu';
 import {createRouteInfoTemplate} from './components/menu-route-info';
 import {createSiteFilterTemplate} from './components/filter';
@@ -7,6 +6,9 @@ import {createAddFormElement} from './components/form-add';
 import {createEditingFormElement} from './components/form-edit';
 import {createTripCardsContainer} from './components/cards-container';
 import {createTripCardItem} from './components/card';
+import {filterNames} from './mock/filter';
+import {menuList} from './mock/menu';
+import {generatePointsOfRoute} from './mock/point';
 
 const TRIP_EVENT_COUNT = 3;
 
@@ -26,9 +28,10 @@ render(siteRouteElement, createRouteInfoTemplate(), `afterbegin`);
 
 const siteMenuElement = siteHeaderElement.querySelector(`.trip-controls`);
 
-
-render(siteMenuElement, createSiteMenuTemplate(), `afterbegin`);
-render(siteMenuElement, createSiteFilterTemplate(), `beforeend`);
+const menus = menuList;
+render(siteMenuElement, createSiteMenuTemplate(menus), `afterbegin`);
+const filters = filterNames;
+render(siteMenuElement, createSiteFilterTemplate(filters), `beforeend`);
 
 const siteTripEventsElement = document.querySelector(`.trip-events`);
 
@@ -36,15 +39,13 @@ const siteTripEventsElement = document.querySelector(`.trip-events`);
 render(siteTripEventsElement, createSiteSortingElement(), `beforeend`);
 render(siteTripEventsElement, createAddFormElement(), `beforeend`);
 
-const siteAddFormElememnt = siteTripEventsElement.querySelector(`.event--edit`);
-
-render(siteAddFormElememnt, createEditingFormElement(), `beforeend`);
-
 
 render(siteTripEventsElement, createTripCardsContainer(), `beforeend`);
 
 const siteTripEventList = siteTripEventsElement.querySelector(`.trip-events__list`);
+const points = generatePointsOfRoute(TRIP_EVENT_COUNT);
+console.info(points);
+const siteAddFormElememnt = siteTripEventsElement.querySelector(`.event--edit`);
+render(siteAddFormElememnt, createEditingFormElement(points[0]), `beforeend`);
+points.forEach((point) => render(siteTripEventList, createTripCardItem(point), `beforeend`));
 
-new Array(TRIP_EVENT_COUNT).fill(``).forEach(() =>
-  render(siteTripEventList, createTripCardItem(), `beforeend`)
-);

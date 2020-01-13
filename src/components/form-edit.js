@@ -1,4 +1,44 @@
-export const createEditingFormElement = () => {
+import {Offers} from '../const.js';
+
+const createEventPhotoMarkup = (photo) => {
+  return (
+    `<img class="event__photo" src="${photo}" alt="Event photo">`
+  );
+};
+
+const createEventDescriptionMarkup = (description) => {
+  const text = [...description];
+  const textDescription = text.join(`. `);
+  return (
+    `<p class="event__destination-description">${textDescription}</p>`
+  );
+};
+
+const createOfferSelectorMarkup = (offers) => {
+
+  const {type, title, price} = offers;
+  // const Ischecked = Offers.has(offers);
+
+  return (
+    `<div class="event__offer-selector">
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${title}-1" type="checkbox" name="event-offer-${title}">
+      <label class="event__offer-label" for="event-offer-c-1">
+        <span class="event__offer-title">${type} ${title}</span>
+        +
+        €&nbsp;<span class="event__offer-price">${price}</span>
+      </label>
+    </div>`
+  );
+};
+
+
+export const createEditingFormElement = (points) => {
+  const {description, images} = points;
+  const photosTape = images.map((it) => createEventPhotoMarkup(it));
+  const textDescription = createEventDescriptionMarkup(description);
+
+  const offersItem = Offers.map((el) => createOfferSelectorMarkup(el)).join(`\n`);
+
   return (
     `<section class="event__details">
 
@@ -6,6 +46,7 @@ export const createEditingFormElement = () => {
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
       <div class="event__available-offers">
+        ${offersItem}
         <div class="event__offer-selector">
           <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked="">
           <label class="event__offer-label" for="event-offer-luggage-1">
@@ -55,15 +96,10 @@ export const createEditingFormElement = () => {
 
     <section class="event__section  event__section--destination">
       <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-      <p class="event__destination-description">Geneva is a city in Switzerland that lies at the southern tip of expansive Lac Léman (Lake Geneva). Surrounded by the Alps and Jura mountains, the city has views of dramatic Mont Blanc.</p>
-
+      <p class="event__destination-description">${textDescription}</p>
       <div class="event__photos-container">
         <div class="event__photos-tape">
-          <img class="event__photo" src="img/photos/1.jpg" alt="Event photo">
-          <img class="event__photo" src="img/photos/2.jpg" alt="Event photo">
-          <img class="event__photo" src="img/photos/3.jpg" alt="Event photo">
-          <img class="event__photo" src="img/photos/4.jpg" alt="Event photo">
-          <img class="event__photo" src="img/photos/5.jpg" alt="Event photo">
+          ${photosTape}
         </div>
       </div>
     </section>
