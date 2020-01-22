@@ -1,4 +1,6 @@
-export const createTripCardsContainer = () => {
+import {createElement} from '../utils.js';
+
+const createTripCardsContainer = () => {
   return (
     `<ul class="trip-days">
       <li class="trip-days__item  day">
@@ -12,3 +14,26 @@ export const createTripCardsContainer = () => {
     </ul>`
   );
 };
+
+export default class CardsContainer {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTripCardsContainer();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+
+}

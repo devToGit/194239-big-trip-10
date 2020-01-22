@@ -1,5 +1,6 @@
 import {formatTime} from '../utils.js';
 import {durFormat} from '../utils.js';
+import {createElement} from '..//utils.js';
 
 const createOffersMarkup = (offer) => {
   const {type, title, price} = offer;
@@ -13,7 +14,7 @@ const createOffersMarkup = (offer) => {
   );
 };
 
-export const createTripCardItem = (points) => {
+const createTripCardItem = (points) => {
   const {typeOfEvent, destination, offers, startTime, endTime, period, price} = points;
   const event = typeOfEvent.name;
   const offersItem = offers.map((el) => createOffersMarkup(el));
@@ -71,4 +72,25 @@ export const createTripCardItem = (points) => {
   );
 };
 
+export default class Card {
+  constructor(filters) {
+    this._filters = filters;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTripCardItem(this._filters);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
 

@@ -1,47 +1,4 @@
-import {Offers} from '../const.js';
-import {createElement} from '..//utils.js';
-
-const createEventPhotoMarkup = (photo) => {
-  return (
-    `<img class="event__photo" src="${photo}" alt="Event photo">`
-  );
-};
-
-const createEventDescriptionMarkup = (description) => {
-  const text = [...description];
-  const textDescription = text.join(`. `);
-  return (
-    `<p class="event__destination-description">${textDescription}</p>`
-  );
-};
-
-const createOfferSelectorMarkup = (offers) => {
-
-  const {type, title, price} = offers;
-  // const Ischecked = Offers.has(offers);
-
-  return (
-    `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${title}-1" type="checkbox" name="event-offer-${title}">
-      <label class="event__offer-label" for="event-offer-c-1">
-        <span class="event__offer-title">${type} ${title}</span>
-        +
-        €&nbsp;<span class="event__offer-price">${price}</span>
-      </label>
-    </div>`
-  );
-};
-
-
-const createEditingFormTemplate = (points) => {
-  const {description, images} = points;
-  const photosTape = images.map((it) => createEventPhotoMarkup(it));
-  const textDescription = createEventDescriptionMarkup(description);
-
-  const offersItem = Offers.map((el) => createOfferSelectorMarkup(el)).join(`\n`);
-
-  return (
-    `<li class="trip-events__item">
+<li class="trip-events__item">
   <form class="trip-events__item  event  event--edit" action="#" method="post">
     <header class="event__header">
     <div class="event__type-wrapper">
@@ -213,28 +170,5 @@ const createEditingFormTemplate = (points) => {
     </section>
     </section>
   </form>
-</li>`
-  );
-};
+</li>
 
-export default class FormEdit {
-  constructor(filters) {
-    this._filters = filters;
-    this._element = null;
-  }
-
-  getTemplate() {
-    return createEditingFormTemplate(this._filters);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
-}
